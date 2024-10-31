@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burrice Artificial</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'IBM Plex Mono', monospace;
+            background-color: white;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 2em;
+            margin: 20px 0;
+            color: #333;
+        }
+        #chat-container {
+            flex-grow: 1;
+            width: 90%;
+            max-width: 600px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 80px;
+        }
+        #input-container {
+            width: 100%;
+            position: fixed;
+            bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: white;
+        }
+        #question-input {
+            width: 100%;
+            max-width: 550px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: 'IBM Plex Mono', monospace;
+            margin-bottom: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        #send-button {
+            padding: 10px 20px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1em;
+            border: none;
+            border-radius: 10px;
+            background-color: #000000;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        #dots {
+            display: none;
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+        .message {
+            width: 80%;
+            max-width: 500px;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            margin: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            word-wrap: break-word;
+        }
+        .question {
+            align-self: flex-end;
+            background-color: #ffffff;
+            text-align: right;
+        }
+        .response {
+            align-self: flex-start;
+            background-color: #F1F0F0;
+            text-align: left;
+        }
+        #wojak {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            width: 400px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🤔 - Burrice Artificial - 🤔</h1>
+    <div id="chat-container"></div>
+    <div id="input-container">
+        <input type="text" id="question-input" placeholder="Digite sua pergunta aqui">
+        <button id="send-button">Enviar</button>
+    </div>
+    <img id="wojak" src="wojak.png" alt="Wojak">
+
+    <script>
+        const responses = [
+            "sei lá caralho kkkkkkkk",
+            "não faço ideia kkkkkkk",
+            "ué, não sei mano kkkkk",
+            "sei lá, pergunta pra outra pessoa kkkkk",
+            "tô por fora dessa aí kkkkkkk",
+            "cara, não sei kkkkkk",
+            "sei não, procura no Google kkkkkk",
+            "pergunta complicada essa hein? kkkkkkk",
+            "não manjo disso não kkkkkkk",
+            "pergunta errada kkkkkkk"
+        ];
+
+        const wojakImage = document.getElementById("wojak");
+        const questionInput = document.getElementById("question-input");
+        const sendButton = document.getElementById("send-button");
+        const chatContainer = document.getElementById("chat-container");
+
+        sendButton.addEventListener("click", () => {
+            const questionText = questionInput.value.trim();
+            if (questionText === "") return;
+
+            // Cria e exibe a pergunta do usuário no lado direito
+            const questionBox = document.createElement("div");
+            questionBox.className = "message question";
+            questionBox.textContent = questionText;
+            chatContainer.appendChild(questionBox);
+
+            // Exibe a imagem wojak_3.png e os "três pontinhos"
+            wojakImage.src = "wojak_3.png";
+            const dots = document.createElement("div");
+            dots.className = "message response";
+            dots.textContent = "...";
+            chatContainer.appendChild(dots);
+
+            // Faz scroll para baixo automaticamente
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Simula o tempo de resposta e exibe uma resposta aleatória
+            setTimeout(() => {
+                const responseText = responses[Math.floor(Math.random() * responses.length)];
+                chatContainer.removeChild(dots);
+
+                const responseBox = document.createElement("div");
+                responseBox.className = "message response";
+                responseBox.textContent = responseText;
+                chatContainer.appendChild(responseBox);
+
+                // Atualiza a imagem do Wojak para wojak_2.png
+                wojakImage.src = "wojak_2.png";
+
+                // Limpa o campo de input e faz scroll para baixo
+                questionInput.value = "";
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 2000);
+        });
+
+        questionInput.addEventListener("input", () => {
+            wojakImage.src = "wojak.png"; // Mostra wojak.jpeg enquanto digita
+        });
+    </script>
+</body>
+</html>
