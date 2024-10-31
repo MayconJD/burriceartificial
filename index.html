@@ -65,11 +65,6 @@
             cursor: pointer;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
-        #dots {
-            display: none;
-            font-size: 1.2em;
-            margin-top: 10px;
-        }
         .message {
             width: 80%;
             max-width: 500px;
@@ -92,10 +87,10 @@
         }
         #wojak {
             position: fixed;
-            bottom: 10px;
-            left: 10px;
-            width: 400px;
-            height: 400px;
+            bottom: 140px;
+            width: 250px;
+            height: 250px;
+            z-index: -1; /* Faz o Wojak ficar atrás de outros elementos */
         }
     </style>
 </head>
@@ -126,6 +121,7 @@
         const questionInput = document.getElementById("question-input");
         const sendButton = document.getElementById("send-button");
         const chatContainer = document.getElementById("chat-container");
+        let questionCount = 0;
 
         sendButton.addEventListener("click", () => {
             const questionText = questionInput.value.trim();
@@ -147,23 +143,45 @@
             // Faz scroll para baixo automaticamente
             chatContainer.scrollTop = chatContainer.scrollHeight;
 
-            // Simula o tempo de resposta e exibe uma resposta aleatória
-            setTimeout(() => {
-                const responseText = responses[Math.floor(Math.random() * responses.length)];
-                chatContainer.removeChild(dots);
+            // Incrementa o contador de perguntas
+            questionCount++;
 
-                const responseBox = document.createElement("div");
-                responseBox.className = "message response";
-                responseBox.textContent = responseText;
-                chatContainer.appendChild(responseBox);
+            // Checa se já foram feitas 3 perguntas
+            if (questionCount === 3) {
+                setTimeout(() => {
+                    chatContainer.removeChild(dots);
+                    const endMessage = document.createElement("div");
+                    endMessage.className = "message response";
+                    endMessage.textContent = "Tomar no cu cara chatokkkk";
+                    chatContainer.appendChild(endMessage);
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
 
-                // Atualiza a imagem do Wojak para wojak_2.png
-                wojakImage.src = "wojak_2.png";
+                    // Reseta o chat após 2 segundos
+                    setTimeout(() => {
+                        chatContainer.innerHTML = "";
+                        wojakImage.src = "wojak.png";
+                        questionCount = 0;
+                    }, 2000);
+                }, 2000);
+            } else {
+                // Simula o tempo de resposta e exibe uma resposta aleatória
+                setTimeout(() => {
+                    const responseText = responses[Math.floor(Math.random() * responses.length)];
+                    chatContainer.removeChild(dots);
 
-                // Limpa o campo de input e faz scroll para baixo
-                questionInput.value = "";
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            }, 2000);
+                    const responseBox = document.createElement("div");
+                    responseBox.className = "message response";
+                    responseBox.textContent = responseText;
+                    chatContainer.appendChild(responseBox);
+
+                    // Atualiza a imagem do Wojak para wojak_2.png
+                    wojakImage.src = "wojak_2.png";
+
+                    // Limpa o campo de input e faz scroll para baixo
+                    questionInput.value = "";
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }, 2000);
+            }
         });
 
         questionInput.addEventListener("input", () => {
