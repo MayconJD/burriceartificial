@@ -23,6 +23,8 @@
             font-size: 2em;
             margin: 20px 0;
             color: #333;
+            text-align: center; /* Centraliza o título em todas as telas */
+            width: 100%; /* Garante que ocupe toda a largura */
         }
         #chat-container {
             flex-grow: 1;
@@ -90,7 +92,7 @@
             bottom: 140px;
             width: 250px;
             height: 250px;
-            z-index: -1; /* Faz o Wojak ficar atrás de outros elementos */
+            z-index: -1;
         }
     </style>
 </head>
@@ -127,26 +129,20 @@
             const questionText = questionInput.value.trim();
             if (questionText === "") return;
 
-            // Cria e exibe a pergunta do usuário no lado direito
             const questionBox = document.createElement("div");
             questionBox.className = "message question";
             questionBox.textContent = questionText;
             chatContainer.appendChild(questionBox);
 
-            // Exibe a imagem wojak_3.png e os "três pontinhos"
             wojakImage.src = "wojak_3.png";
             const dots = document.createElement("div");
             dots.className = "message response";
             dots.textContent = "...";
             chatContainer.appendChild(dots);
 
-            // Faz scroll para baixo automaticamente
             chatContainer.scrollTop = chatContainer.scrollHeight;
-
-            // Incrementa o contador de perguntas
             questionCount++;
 
-            // Checa se já foram feitas 3 perguntas
             if (questionCount === 3) {
                 setTimeout(() => {
                     chatContainer.removeChild(dots);
@@ -156,7 +152,6 @@
                     chatContainer.appendChild(endMessage);
                     chatContainer.scrollTop = chatContainer.scrollHeight;
 
-                    // Reseta o chat após 2 segundos
                     setTimeout(() => {
                         chatContainer.innerHTML = "";
                         wojakImage.src = "wojak.png";
@@ -164,7 +159,6 @@
                     }, 2000);
                 }, 2000);
             } else {
-                // Simula o tempo de resposta e exibe uma resposta aleatória
                 setTimeout(() => {
                     const responseText = responses[Math.floor(Math.random() * responses.length)];
                     chatContainer.removeChild(dots);
@@ -174,10 +168,7 @@
                     responseBox.textContent = responseText;
                     chatContainer.appendChild(responseBox);
 
-                    // Atualiza a imagem do Wojak para wojak_2.png
                     wojakImage.src = "wojak_2.png";
-
-                    // Limpa o campo de input e faz scroll para baixo
                     questionInput.value = "";
                     chatContainer.scrollTop = chatContainer.scrollHeight;
                 }, 2000);
@@ -185,7 +176,7 @@
         });
 
         questionInput.addEventListener("input", () => {
-            wojakImage.src = "wojak.png"; // Mostra wojak.jpeg enquanto digita
+            wojakImage.src = "wojak.png";
         });
     </script>
 </body>
